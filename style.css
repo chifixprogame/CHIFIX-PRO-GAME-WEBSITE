@@ -35,9 +35,9 @@ header {
     gap: 12px;
 }
 
-/* ===== الشعار في الهيدر (جنب الاسم) ===== */
+/* ===== الشعار في الهيدر ===== */
 .logo-img {
-    height: 60px;  /* تم التكبير من 50px إلى 60px */
+    height: 60px;
     width: auto;
     object-fit: contain;
     background: transparent;
@@ -95,7 +95,7 @@ header nav a:last-child:hover {
     box-shadow: 0 0 30px rgba(255, 71, 87, 0.5);
 }
 
-/* ===== قسم الهيرو (الشعار كبير في المنتصف) ===== */
+/* ===== قسم الهيرو ===== */
 .hero {
     min-height: 85vh;
     background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
@@ -116,7 +116,7 @@ header nav a:last-child:hover {
     max-width: 70%;
     width: auto;
     height: auto;
-    max-height: 500px;  /* تم التكبير */
+    max-height: 500px;
     object-fit: contain;
     background: transparent;
     filter: drop-shadow(0 0 60px rgba(255, 71, 87, 0.15));
@@ -406,6 +406,62 @@ header nav a:last-child:hover {
     text-decoration: underline;
 }
 
+/* ===== نظام التقييم (5 نجوم) ===== */
+.rating-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+    padding: 8px 12px;
+    background: #f8f8f8;
+    border-radius: 8px;
+    flex-wrap: wrap;
+}
+
+.stars {
+    display: flex;
+    gap: 3px;
+    direction: ltr;
+}
+
+.star {
+    font-size: 22px;
+    cursor: pointer;
+    transition: 0.3s;
+    color: #ddd;
+    user-select: none;
+}
+
+.star.filled {
+    color: #ffc107;
+}
+
+.star.half {
+    color: #ffc107;
+    background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.star.empty {
+    color: #ddd;
+}
+
+.star:hover {
+    transform: scale(1.2);
+    color: #ffc107;
+}
+
+.star.filled:hover {
+    color: #ff9800;
+}
+
+.rating-text {
+    color: #666;
+    font-size: 13px;
+    font-weight: bold;
+}
+
 /* ===== زر واتساب ===== */
 .whatsapp-btn {
     display: inline-block;
@@ -602,12 +658,12 @@ footer p {
     }
     
     .logo-img {
-        height: 40px;  /* تم التعديل للشاشات الصغيرة */
+        height: 40px;
     }
     
     .hero-logo-large {
         max-width: 95%;
-        max-height: 280px;  /* تم التعديل للشاشات الصغيرة */
+        max-height: 280px;
     }
     
     .hero-subtitle {
@@ -653,5 +709,15 @@ footer p {
 
     .card-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .star {
+        font-size: 18px;
+    }
+    
+    .rating-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
     }
 }
