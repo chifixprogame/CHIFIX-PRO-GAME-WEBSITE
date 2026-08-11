@@ -97,56 +97,63 @@ header nav a:last-child:hover {
 
 /* ===== قسم الهيرو ===== */
 .hero {
-    min-height: 85vh;
+    min-height: 90vh;
     background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 60px 20px;
+    padding: 40px 20px;
 }
 
 .hero-overlay {
-    max-width: 1000px;
+    max-width: 1100px;
     width: 100%;
 }
 
-/* ===== الشعار الكبير في المنتصف ===== */
+/* ===== الشعار الكبير جداً في المنتصف ===== */
 .hero-logo-large {
-    max-width: 70%;
+    max-width: 85%;
     width: auto;
     height: auto;
-    max-height: 500px;
+    max-height: 650px;
     object-fit: contain;
     background: transparent;
-    filter: drop-shadow(0 0 60px rgba(255, 71, 87, 0.15));
-    margin-bottom: 20px;
-    transition: 0.3s;
+    filter: drop-shadow(0 0 80px rgba(255, 71, 87, 0.2));
+    margin-bottom: 25px;
+    transition: 0.5s;
+    animation: floatLogo 3s ease-in-out infinite;
 }
 
 .hero-logo-large:hover {
-    transform: scale(1.03);
-    filter: drop-shadow(0 0 80px rgba(255, 71, 87, 0.25));
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 100px rgba(255, 71, 87, 0.35));
+}
+
+@keyframes floatLogo {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-18px); }
 }
 
 .hero-subtitle {
     color: #1a1a2e;
-    font-size: 24px;
-    letter-spacing: 8px;
+    font-size: 26px;
+    letter-spacing: 10px;
     margin: 15px 0 35px;
     opacity: 0.8;
-    word-spacing: 12px;
+    word-spacing: 15px;
+    font-weight: 300;
 }
 
 .hero-buttons {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 25px;
     flex-wrap: wrap;
 }
 
 .hero-btn {
-    padding: 14px 45px;
+    padding: 16px 50px;
     border-radius: 50px;
     text-decoration: none;
     font-size: 18px;
@@ -159,14 +166,14 @@ header nav a:last-child:hover {
     background: #ff4757;
     color: #fff;
     border: 2px solid #ff4757;
-    box-shadow: 0 0 30px rgba(255, 71, 87, 0.2);
+    box-shadow: 0 0 30px rgba(255, 71, 87, 0.25);
 }
 
 .hero-btn.primary:hover {
     background: transparent;
     color: #ff4757;
     transform: scale(1.05);
-    box-shadow: 0 0 50px rgba(255, 71, 87, 0.3);
+    box-shadow: 0 0 50px rgba(255, 71, 87, 0.4);
 }
 
 .hero-btn.secondary {
@@ -494,7 +501,7 @@ header nav a:last-child:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.9);
+    background: rgba(0,0,0,0.92);
     z-index: 9999;
     display: flex;
     align-items: center;
@@ -508,7 +515,7 @@ header nav a:last-child:hover {
     max-height: 90%;
     object-fit: contain;
     border-radius: 8px;
-    box-shadow: 0 0 50px rgba(255,71,87,0.3);
+    box-shadow: 0 0 60px rgba(255,71,87,0.2);
 }
 
 .lightbox-overlay .close-lightbox {
@@ -663,7 +670,7 @@ footer p {
     
     .hero-logo-large {
         max-width: 95%;
-        max-height: 280px;
+        max-height: 350px;
     }
     
     .hero-subtitle {
