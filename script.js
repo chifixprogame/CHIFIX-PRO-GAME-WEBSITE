@@ -1,32 +1,40 @@
 // ============================================
-// ⭐ نظام تقييم المنتجات (5 نجوم)
+// 📦 إدارة البيانات في localStorage
 // ============================================
 
-// دالة لحفظ التقييم
+function getData() {
+    const stored = localStorage.getItem('chifixData');
+    return stored ? JSON.parse(stored) : [];
+}
+
+function saveData(data) {
+    localStorage.setItem('chifixData', JSON.stringify(data));
+}
+
+// ============================================
+// ⭐ نظام التقييم (5 نجوم)
+// ============================================
+
 function saveRating(itemId, rating) {
     const data = getData();
     const item = data.find(i => i.id === itemId);
     if (!item) return;
 
-    // إذا كان التقييم موجوداً، نعدله
-    if (item.ratings) {
-        item.ratings.push(rating);
-    } else {
-        item.ratings = [rating];
-    }
+    if (!item.ratings) item.ratings = [];
+    item.ratings.push(rating);
 
-    // حساب متوسط التقييم
     const total = item.ratings.reduce((a, b) => a + b, 0);
     item.averageRating = total / item.ratings.length;
     item.totalRatings = item.ratings.length;
 
     saveData(data);
-    displayItems(item.type, item.type === 'course' ? 'coursesContainer' : 
-                           item.type === 'console' ? 'consolesContainer' : 
-                           'partsContainer');
+    
+    // تحديث العرض حسب النوع
+    if (item.type === 'course') displayItems('course', 'coursesContainer');
+    else if (item.type === 'console') displayItems('console', 'consolesContainer');
+    else if (item.type === 'part') displayItems('part', 'partsContainer');
 }
 
-// دالة لعرض النجوم
 function renderStars(rating, itemId) {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.5 ? 1 : 0;
@@ -34,18 +42,17 @@ function renderStars(rating, itemId) {
 
     let starsHtml = '';
     for (let i = 0; i < fullStars; i++) {
-        starsHtml += `<span class="star filled" data-value="${i+1}" onclick="rateProduct(${itemId}, ${i+1})">★</span>`;
+        starsHtml += `<span class="star filled" onclick="rateProduct(${itemId}, ${i+1})">★</span>`;
     }
     if (halfStar) {
-        starsHtml += `<span class="star half" data-value="${fullStars+1}" onclick="rateProduct(${itemId}, ${fullStars+1})">★</span>`;
+        starsHtml += `<span class="star half">★</span>`;
     }
     for (let i = 0; i < emptyStars; i++) {
-        starsHtml += `<span class="star empty" data-value="${fullStars + halfStar + i + 1}" onclick="rateProduct(${itemId}, ${fullStars + halfStar + i + 1})">★</span>`;
+        starsHtml += `<span class="star empty" onclick="rateProduct(${itemId}, ${fullStars + halfStar + i + 1})">★</span>`;
     }
     return starsHtml;
 }
 
-// دالة التقييم عند الضغط على نجمة
 function rateProduct(itemId, rating) {
     if (!confirm(`هل تريد تقييم هذا المنتج بـ ${rating} نجوم؟`)) return;
     saveRating(itemId, rating);
@@ -53,98 +60,73 @@ function rateProduct(itemId, rating) {
 }
 
 // ============================================
-// 🖥️ عرض العناصر مع التقييم
+// ➕ إضافة عنصر جديد
 // ============================================
 
-function displayItems(type, containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
+function addItem() {
+    const type = document.getElementById('itemType').value;
+    const title = document.getElementById('itemTitle').value.trim();
+    const description = document.getElementById('itemDesc').value.trim();
+    const price = document.getElementById('itemPrice').value.trim();
+    const image = document.getElementById('itemImage').value.trim();
+    const images = document.getElementById('itemImages').value.trim();
+    const specs = document.getElementById('itemSpecs').value.trim();
 
-    const data = getData();
-    const filtered = data.filter(item => item.type === type);
-
-    if (filtered.length === 0) {
-        container.innerHTML = `<p style="color:#666;">📭 لا توجد عناصر في هذا القسم حالياً</p>`;
+    if (!title || !description || !price || !image) {
+        alert('❌ الرجاء ملء جميع الحقول الأساسية!');
         return;
     }
 
-    container.innerHTML = filtered.map(item => {
-        // زيادة عدد المشاهدات
-        let views = item.views || 0;
-        views++;
-        item.views = views;
-        const allData = getData();
-        const updatedData = allData.map(i => i.id === item.id ? item : i);
-        saveData(updatedData);
+    const newItem = {
+        id: Date.now(),
+        type: type,
+        title: title,
+        description: description,
+        price: price,
+        image: image,
+        images: images ? images.split(',').map(img => img.trim()) : [],
+        specs: specs ? specs.split(',').map(spec => spec.trim()) : [],
+        views: 0,
+        ratings: [],
+        averageRating: 0,
+        totalRatings: 0,
+        createdAt: new Date().toLocaleString('ar-DZ')
+    };
 
-        // بناء رسالة واتساب
-        const whatsappMessage = encodeURIComponent(
-            `🛒 طلب منتج من CHIFIX PRO GAME\n\n` +
-            `📦 المنتج: ${item.title}\n` +
-            `📝 الوصف: ${item.description}\n` +
-            `💰 السعر: ${item.price} دولار\n` +
-            `⭐ التقييم: ${item.averageRating ? item.averageRating.toFixed(1) : 'غير مقيم'} (${item.totalRatings || 0} تقييم)\n` +
-            `🔗 الرابط: ${window.location.href}`
-        );
-        const whatsappUrl = `https://wa.me/213671676544?text=${whatsappMessage}`;
-
-        // بناء الصور المصغرة
-        let thumbnails = '';
-        if (item.images && item.images.length > 0) {
-            thumbnails = item.images.map(img => `
-                <img src="${img}" alt="${item.title}" class="thumb" onclick="openLightbox('${img}')" />
-            `).join('');
+    if (type === 'course') {
+        const video = document.getElementById('itemVideo').value.trim();
+        if (!video) {
+            alert('❌ الرجاء إدخال رابط الفيديو للدورة!');
+            return;
         }
+        newItem.video = video;
+    }
 
-        // بناء المواصفات
-        let specsHtml = '';
-        if (item.specs && item.specs.length > 0) {
-            specsHtml = `
-                <div class="specs">
-                    <h4>📋 المواصفات:</h4>
-                    <ul>
-                        ${item.specs.map(spec => `<li>${spec}</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-        }
+    if (type === 'console') {
+        newItem.status = document.getElementById('itemStatus').value;
+    }
 
-        // بناء التقييم
-        const avgRating = item.averageRating || 0;
-        const totalRatings = item.totalRatings || 0;
-        const starsHtml = renderStars(avgRating, item.id);
+    const data = getData();
+    data.push(newItem);
+    saveData(data);
 
-        return `
-        <div class="card">
-            <div class="card-image">
-                <img src="${item.image}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/300x200/252540/666?text=No+Image'" />
-                <span class="view-count">👁️ ${item.views}</span>
-                ${item.images && item.images.length > 0 ? `
-                <div class="thumbnails">
-                    ${thumbnails}
-                </div>
-                ` : ''}
-            </div>
-            <div class="content">
-                <h3>${item.title}</h3>
-                <p class="description">${item.description}</p>
-                ${specsHtml}
-                <span class="price">💰 ${item.price} دولار</span>
-                ${item.video ? `<a href="${item.video}" target="_blank" class="video-link">▶️ مشاهدة الفيديو</a>` : ''}
-                ${item.status ? `<span class="status ${item.status === 'متاح' ? 'available' : 'sold'}">${item.status}</span>` : ''}
-                
-                <!-- ===== التقييم ===== -->
-                <div class="rating-section">
-                    <div class="stars">
-                        ${starsHtml}
-                    </div>
-                    <span class="rating-text">${avgRating ? avgRating.toFixed(1) : 'غير مقيم'} (${totalRatings} تقييم)</span>
-                </div>
-                
-                <a href="${whatsappUrl}" target="_blank" class="whatsapp-btn">
-                    💬 طلب عبر واتساب
-                </a>
-            </div>
-        </div>
-    `}).join('');
+    // تنظيف النموذج
+    document.getElementById('itemTitle').value = '';
+    document.getElementById('itemDesc').value = '';
+    document.getElementById('itemPrice').value = '';
+    document.getElementById('itemImage').value = '';
+    document.getElementById('itemImages').value = '';
+    document.getElementById('itemSpecs').value = '';
+    document.getElementById('itemVideo').value = '';
+
+    renderAdminTable();
+    updateDashboard();
+    renderTopProducts();
+    alert('✅ تمت الإضافة بنجاح!');
 }
+
+// ============================================
+// 🖥️ عرض العناصر في الصفحة الرئيسية
+// ============================================
+
+function displayItems(type,
