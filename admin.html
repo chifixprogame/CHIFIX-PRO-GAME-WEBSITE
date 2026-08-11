@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>لوحة التحكم المتطورة - CHIFIX</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* ===== إحصائيات ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #1a1a2e;
+            padding: 25px 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #252540;
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: #ff4757;
+            transform: translateY(-3px);
+        }
+
+        .stat-card .stat-number {
+            font-size: 36px;
+            font-weight: 900;
+            color: #ff4757;
+            display: block;
+        }
+
+        .stat-card .stat-label {
+            color: #aaa;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .stat-card .stat-icon {
+            font-size: 30px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* ===== أكثر المنتجات مشاهدة ===== */
+        .top-products {
+            background: #1a1a2e;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #252540;
+            margin-bottom: 30px;
+        }
+
+        .top-products h3 {
+            color: #ff4757;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #252540;
+            transition: 0.3s;
+        }
+
+        .product-item:hover {
+            background: #252540;
+            border-radius: 8px;
+        }
+
+        .product-item .rank {
+            color: #ff4757;
+            font-weight: bold;
+            font-size: 18px;
+            margin-left: 15px;
+        }
+
+        .product-item .product-name {
+            color: #fff;
+            flex: 1;
+        }
+
+        .product-item .product-views {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* ===== إدارة الطلبات ===== */
+        .orders-section {
+            background: #1a1a2e;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #252540;
+            margin-bottom: 30px;
+        }
+
+        .orders-section h3 {
+            color: #ff4757;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #252540;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .order-item .order-info {
+            color: #fff;
+            flex: 1;
+        }
+
+        .order-item .order-info small {
+            color: #666;
+            display: block;
+            font-size: 12px;
+        }
+
+        .order-item .order-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .order-status.pending {
+            background: #f39c12;
+            color: #fff;
+        }
+
+        .order-status.completed {
+            background: #27ae60;
+            color: #fff;
+        }
+
+        .order-status.cancelled {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        .order-actions button {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 0 3px;
+            transition: 0.3s;
+        }
+
+        .btn-complete {
+            background: #27ae60;
+            color: #fff;
+        }
+
+        .btn-cancel {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        .btn-complete:hover {
+            background: #1e8449;
+        }
+
+        .btn-cancel:hover {
+            background: #c0392b;
+        }
+
+        /* ===== إحصائيات الزوار ===== */
+        .chart-container {
+            background: #1a1a2e;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #252540;
+            margin-bottom: 30px;
+        }
+
+        .chart-container h3 {
+            color: #ff4757;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .chart-bars {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 200px;
+            gap: 15px;
+        }
+
+        .chart-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .chart-bar .bar {
+            width: 100%;
+            max-width: 40px;
+            background: linear-gradient(180deg, #ff4757, #e8354a);
+            border-radius: 6px 6px 0 0;
+            transition: 0.5s;
+            min-height: 10px;
+        }
+
+        .chart-bar .bar:hover {
+            opacity: 0.8;
+            transform: scaleY(1.05);
+            transform-origin: bottom;
+        }
+
+        .chart-bar .day-label {
+            color: #aaa;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .chart-bar .day-value {
+            color: #ff4757;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+
+        /* ===== تبويبات ===== */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 25px;
+            background: #252540;
+            border: 1px solid #333;
+            border-radius: 30px;
+            color: #aaa;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        .tab-btn:hover {
+            background: #2a2a4a;
+            border-color: #ff4757;
+            color: #fff;
+        }
+
+        .tab-btn.active {
+            background: #ff4757;
+            border-color: #ff4757;
+            color: #fff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ===== لوحة التحكم ===== */
+        .admin-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .admin-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .admin-form {
+            background: #1a1a2e;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .admin-form label {
+            display: block;
+            margin: 12px 0 5px;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .admin-form input,
+        .admin-form textarea,
+        .admin-form select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #252540;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .admin-form textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        .admin-form button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: #ff4757;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .admin-form button:hover {
+            background: #e8354a;
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 71, 87, 0.4);
+        }
+
+        .admin-table {
+            background: #1a1a2e;
+            padding: 25px;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        .admin-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .admin-table th {
+            background: #252540;
+            color: #ff4757;
+            padding: 12px;
+            text-align: right;
+        }
+
+        .admin-table td {
+            padding: 12px;
+            border-bottom: 1px solid #333;
+            color: #ccc;
+        }
+
+        .admin-table .btn {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 0 3px;
+            font-size: 13px;
+        }
+
+        .btn-edit {
+            background: #f9a825;
+            color: #000;
+        }
+
+        .btn-delete {
+            background: #ff4757;
+            color: #fff;
+        }
+
+        .btn-edit:hover {
+            background: #f57f17;
+        }
+        .btn-delete:hover {
+            background: #c62828;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== حماية كلمة السر ====== -->
+    <script>
+        var password = prompt("🔐 أدخل كلمة المرور للدخول إلى لوحة التحكم:");
+        var correctPassword = "chifix2026";
+
+        if (password !== correctPassword) {
+            alert("❌ كلمة المرور غير صحيحة!");
+            window.location.href = "index.html";
+        }
+    </script>
+
+    <!-- ====== محتوى لوحة التحكم ====== -->
+    <header style="background: rgba(26,26,46,0.95); padding: 15px 30px; border-bottom: 2px solid #ff4757; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <h1 style="color: #ff4757; font-size: 24px;">📊 لوحة التحكم المتطورة - CHIFIX PRO GAME</h1>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="index.html" style="color: #fff; text-decoration: none; background: #ff4757; padding: 8px 20px; border-radius: 30px;">🏠 العودة للموقع</a>
+        </div>
+    </header>
+
+    <main style="padding: 20px; max-width: 1400px; margin: 0 auto;">
+
+        <!-- ====== تبويبات ====== -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('dashboard')">📊 الإحصائيات</button>
+            <button class="tab-btn" onclick="switchTab('products')">📦 إدارة المنتجات</button>
+            <button class="tab-btn" onclick="switchTab('orders')">📋 الطلبات</button>
+        </div>
+
+        <!-- ====== تبويب الإحصائيات ====== -->
+        <div id="tab-dashboard" class="tab-content active">
+
+            <!-- بطاقات الإحصائيات -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-icon">👥</span>
+                    <span class="stat-number" id="totalVisitors">0</span>
+                    <span class="stat-label">عدد الزوار</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">📦</span>
+                    <span class="stat-number" id="totalProducts">0</span>
+                    <span class="stat-label">عدد المنتجات</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">📋</span>
+                    <span class="stat-number" id="totalOrders">0</span>
+                    <span class="stat-label">الطلبات</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">💰</span>
+                    <span class="stat-number" id="totalRevenue">0</span>
+                    <span class="stat-label">إجمالي المبيعات (دولار)</span>
+                </div>
+            </div>
+
+            <!-- رسم بياني للزوار -->
+            <div class="chart-container">
+                <h3>📊 إحصائيات الزوار (آخر 7 أيام)</h3>
+                <div class="chart-bars" id="visitorChart"></div>
+            </div>
+
+            <!-- أكثر المنتجات مشاهدة -->
+            <div class="top-products">
+                <h3>🏆 أكثر المنتجات مشاهدة</h3>
+                <div id="topProductsList"></div>
+            </div>
+        </div>
+
+        <!-- ====== تبويب إدارة المنتجات ====== -->
+        <div id="tab-products" class="tab-content">
+
+            <div class="admin-container">
+                <!-- نموذج الإضافة -->
+                <div class="admin-form">
+                    <h2 style="color: #ff4757; margin-bottom: 20px;">➕ إضافة عنصر جديد</h2>
+
+                    <label>نوع العنصر:</label>
+                    <select id="itemType" onchange="toggleFields()">
+                        <option value="course">🎓 دورة</option>
+                        <option value="console">🎮 كونسول للبيع</option>
+                        <option value="part">🔧 قطعة غيار</option>
+                    </select>
+
+                    <label>العنوان:</label>
+                    <input type="text" id="itemTitle" placeholder="مثال: دورة صيانة PS5" />
+
+                    <label>الوصف:</label>
+                    <textarea id="itemDesc" placeholder="وصف تفصيلي..."></textarea>
+
+                    <label>السعر (دولار):</label>
+                    <input type="text" id="itemPrice" placeholder="مثال: 500" />
+
+                    <label>رابط الصورة الرئيسية:</label>
+                    <input type="text" id="itemImage" placeholder="https://example.com/image.jpg" />
+
+                    <label>صور إضافية (روابط مفصولة بفاصلة):</label>
+                    <input type="text" id="itemImages" placeholder="https://example.com/img1.jpg, https://example.com/img2.jpg" />
+
+                    <label>المواصفات (مفصولة بفاصلة):</label>
+                    <input type="text" id="itemSpecs" placeholder="المعالج: Intel i7, الرام: 16GB" />
+
+                    <div id="videoField">
+                        <label>رابط الفيديو (YouTube):</label>
+                        <input type="text" id="itemVideo" placeholder="https://youtu.be/..." />
+                    </div>
+
+                    <div id="statusField" style="display:none;">
+                        <label>الحالة:</label>
+                        <select id="itemStatus">
+                            <option value="متاح">🟢 متاح</option>
+                            <option value="نفد">🔴 نفد</option>
+                        </select>
+                    </div>
+
+                    <button onclick="addItem()">💾 إضافة</button>
+                </div>
+
+                <!-- جدول المنتجات -->
+                <div class="admin-table">
+                    <h2 style="color: #ff4757; margin-bottom: 20px;">📋 جميع المنتجات</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>النوع</th>
+                                <th>العنوان</th>
+                                <th>السعر</th>
+                                <th>المشاهدات</th>
+                                <th>الصور</th>
+                                <th>التحكم</th>
+                            </tr>
+                        </thead>
+                        <tbody id="itemsTableBody">
+                            <!-- يتم تعبئتها بالجافاسكريبت -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== تبويب الطلبات ====== -->
+        <div id="tab-orders" class="tab-content">
+            <div class="orders-section">
+                <h3>📋 إدارة الطلبات</h3>
+                <div id="ordersList">
+                    <p style="color: #666; text-align: center; padding: 40px;">📭 لا توجد طلبات حتى الآن</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        window.onload = function() {
+            updateDashboard();
+            renderAdminTable();
+            renderOrders();
+            renderChart();
+            renderTopProducts();
+            toggleFields();
+        };
+    </script>
+
+</body>
+</html>
