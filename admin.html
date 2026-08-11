@@ -6,7 +6,6 @@
     <title>لوحة التحكم المتطورة - CHIFIX</title>
     <link rel="stylesheet" href="style.css" />
     <style>
-        /* ===== إحصائيات ===== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -47,7 +46,6 @@
             margin-bottom: 10px;
         }
 
-        /* ===== أكثر المنتجات مشاهدة ===== */
         .top-products {
             background: #1a1a2e;
             padding: 25px;
@@ -93,7 +91,6 @@
             font-size: 14px;
         }
 
-        /* ===== إدارة الطلبات ===== */
         .orders-section {
             background: #1a1a2e;
             padding: 25px;
@@ -179,7 +176,6 @@
             background: #c0392b;
         }
 
-        /* ===== إحصائيات الزوار ===== */
         .chart-container {
             background: #1a1a2e;
             padding: 25px;
@@ -237,7 +233,6 @@
             margin-top: 4px;
         }
 
-        /* ===== تبويبات ===== */
         .tabs {
             display: flex;
             gap: 10px;
@@ -276,7 +271,6 @@
             display: block;
         }
 
-        /* ===== لوحة التحكم ===== */
         .admin-container {
             display: grid;
             grid-template-columns: 1fr 2fr;
@@ -404,7 +398,6 @@
 </head>
 <body>
 
-    <!-- ====== حماية كلمة السر ====== -->
     <script>
         var password = prompt("🔐 أدخل كلمة المرور للدخول إلى لوحة التحكم:");
         var correctPassword = "chifix2026";
@@ -415,7 +408,6 @@
         }
     </script>
 
-    <!-- ====== محتوى لوحة التحكم ====== -->
     <header style="background: rgba(26,26,46,0.95); padding: 15px 30px; border-bottom: 2px solid #ff4757; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
         <h1 style="color: #ff4757; font-size: 24px;">📊 لوحة التحكم المتطورة - CHIFIX PRO GAME</h1>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
@@ -425,17 +417,14 @@
 
     <main style="padding: 20px; max-width: 1400px; margin: 0 auto;">
 
-        <!-- ====== تبويبات ====== -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('dashboard')">📊 الإحصائيات</button>
             <button class="tab-btn" onclick="switchTab('products')">📦 إدارة المنتجات</button>
             <button class="tab-btn" onclick="switchTab('orders')">📋 الطلبات</button>
         </div>
 
-        <!-- ====== تبويب الإحصائيات ====== -->
         <div id="tab-dashboard" class="tab-content active">
 
-            <!-- بطاقات الإحصائيات -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <span class="stat-icon">👥</span>
@@ -459,24 +448,20 @@
                 </div>
             </div>
 
-            <!-- رسم بياني للزوار -->
             <div class="chart-container">
                 <h3>📊 إحصائيات الزوار (آخر 7 أيام)</h3>
                 <div class="chart-bars" id="visitorChart"></div>
             </div>
 
-            <!-- أكثر المنتجات مشاهدة -->
             <div class="top-products">
                 <h3>🏆 أكثر المنتجات مشاهدة</h3>
                 <div id="topProductsList"></div>
             </div>
         </div>
 
-        <!-- ====== تبويب إدارة المنتجات ====== -->
         <div id="tab-products" class="tab-content">
 
             <div class="admin-container">
-                <!-- نموذج الإضافة -->
                 <div class="admin-form">
                     <h2 style="color: #ff4757; margin-bottom: 20px;">➕ إضافة عنصر جديد</h2>
 
@@ -521,7 +506,6 @@
                     <button onclick="addItem()">💾 إضافة</button>
                 </div>
 
-                <!-- جدول المنتجات -->
                 <div class="admin-table">
                     <h2 style="color: #ff4757; margin-bottom: 20px;">📋 جميع المنتجات</h2>
                     <table>
@@ -538,14 +522,12 @@
                             </tr>
                         </thead>
                         <tbody id="itemsTableBody">
-                            <!-- يتم تعبئتها بالجافاسكريبت -->
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- ====== تبويب الطلبات ====== -->
         <div id="tab-orders" class="tab-content">
             <div class="orders-section">
                 <h3>📋 إدارة الطلبات</h3>
