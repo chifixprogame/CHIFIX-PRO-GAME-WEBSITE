@@ -5,19 +5,46 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* ===== المتغيرات ===== */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #1a1a2e;
+    --card-bg: #ffffff;
+    --section-bg: #f8f8f8;
+    --border-color: #e0e0e0;
+    --shadow-color: rgba(0,0,0,0.05);
+    --header-bg: #1a1a2e;
+    --footer-bg: #ffffff;
+    --hero-bg: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+}
+
+body.dark-mode {
+    --bg-color: #0d0d0d;
+    --text-color: #ffffff;
+    --card-bg: #1a1a2e;
+    --section-bg: #1a1a2e;
+    --border-color: #333;
+    --shadow-color: rgba(0,0,0,0.3);
+    --header-bg: #0d0d0d;
+    --footer-bg: #1a1a2e;
+    --hero-bg: linear-gradient(135deg, #0d0d0d, #1a1a2e);
+}
+
 body {
-    background: #ffffff;
-    color: #1a1a2e;
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
 }
 
 /* ===== الهيدر ===== */
 header {
-    background: #1a1a2e;
+    background: var(--header-bg);
     padding: 12px 30px;
     border-bottom: 3px solid #ff4757;
     position: sticky;
     top: 0;
     z-index: 1000;
+    transition: all 0.3s ease;
 }
 
 .header-container {
@@ -27,6 +54,7 @@ header {
     flex-wrap: wrap;
     max-width: 1400px;
     margin: 0 auto;
+    gap: 10px;
 }
 
 .logo {
@@ -35,7 +63,6 @@ header {
     gap: 12px;
 }
 
-/* ===== الشعار في الهيدر ===== */
 .logo-img {
     height: 60px;
     width: auto;
@@ -61,6 +88,73 @@ header {
     transform: scale(1.05);
 }
 
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* ===== أزرار تبديل اللغة ===== */
+.language-switcher {
+    display: flex;
+    gap: 5px;
+    background: rgba(255,255,255,0.1);
+    padding: 4px;
+    border-radius: 30px;
+}
+
+.lang-btn {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 20px;
+    background: transparent;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.lang-btn:hover {
+    color: #fff;
+}
+
+.lang-btn.active {
+    background: #ff4757;
+    color: #fff;
+}
+
+body:not(.dark-mode) .lang-btn.active {
+    background: #ff4757;
+    color: #fff;
+}
+
+/* ===== زر الوضع الليلي ===== */
+.dark-mode-btn {
+    background: transparent;
+    border: 1px solid #555;
+    border-radius: 50%;
+    padding: 8px 10px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    color: #fff;
+}
+
+.dark-mode-btn:hover {
+    border-color: #ff4757;
+    transform: scale(1.1);
+}
+
+body:not(.dark-mode) .dark-mode-btn {
+    color: #1a1a2e;
+    border-color: #ddd;
+}
+
+body:not(.dark-mode) .dark-mode-btn:hover {
+    border-color: #ff4757;
+}
+
+/* ===== القائمة ===== */
 header nav {
     display: flex;
     gap: 10px;
@@ -98,12 +192,13 @@ header nav a:last-child:hover {
 /* ===== قسم الهيرو ===== */
 .hero {
     min-height: 90vh;
-    background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+    background: var(--hero-bg);
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     padding: 40px 20px;
+    transition: all 0.3s ease;
 }
 
 .hero-overlay {
@@ -111,7 +206,6 @@ header nav a:last-child:hover {
     width: 100%;
 }
 
-/* ===== الشعار الكبير جداً في المنتصف ===== */
 .hero-logo-large {
     max-width: 85%;
     width: auto;
@@ -136,13 +230,14 @@ header nav a:last-child:hover {
 }
 
 .hero-subtitle {
-    color: #1a1a2e;
+    color: var(--text-color);
     font-size: 26px;
     letter-spacing: 10px;
     margin: 15px 0 35px;
     opacity: 0.8;
     word-spacing: 15px;
     font-weight: 300;
+    transition: all 0.3s ease;
 }
 
 .hero-buttons {
@@ -178,14 +273,14 @@ header nav a:last-child:hover {
 
 .hero-btn.secondary {
     background: transparent;
-    color: #1a1a2e;
-    border: 2px solid #1a1a2e;
+    color: var(--text-color);
+    border: 2px solid var(--text-color);
 }
 
 .hero-btn.secondary:hover {
-    background: #1a1a2e;
-    color: #fff;
-    border-color: #1a1a2e;
+    background: var(--text-color);
+    color: var(--bg-color);
+    border-color: var(--text-color);
     transform: scale(1.05);
 }
 
@@ -193,9 +288,10 @@ header nav a:last-child:hover {
 .section {
     margin: 40px 20px;
     padding: 30px;
-    background: #f8f8f8;
+    background: var(--section-bg);
     border-radius: 16px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
 }
 
 .section h2 {
@@ -214,13 +310,13 @@ header nav a:last-child:hover {
 }
 
 .service-card {
-    background: #ffffff;
+    background: var(--card-bg);
     padding: 25px 20px;
     text-align: center;
     border-radius: 12px;
-    border: 1px solid #e0e0e0;
-    transition: 0.3s;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .service-card:hover {
@@ -236,7 +332,7 @@ header nav a:last-child:hover {
 }
 
 .service-card h3 {
-    color: #1a1a2e;
+    color: var(--text-color);
     font-size: 20px;
     margin-bottom: 5px;
 }
@@ -244,6 +340,10 @@ header nav a:last-child:hover {
 .service-card p {
     color: #666;
     font-size: 14px;
+}
+
+body.dark-mode .service-card p {
+    color: #aaa;
 }
 
 /* ===== بطاقات المنتجات ===== */
@@ -254,12 +354,12 @@ header nav a:last-child:hover {
 }
 
 .card {
-    background: #ffffff;
+    background: var(--card-bg);
     border-radius: 12px;
     overflow: hidden;
-    transition: 0.3s;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .card:hover {
@@ -320,7 +420,7 @@ header nav a:last-child:hover {
 }
 
 .card .content h3 {
-    color: #1a1a2e;
+    color: var(--text-color);
     font-size: 20px;
     margin-bottom: 8px;
 }
@@ -332,11 +432,19 @@ header nav a:last-child:hover {
     margin-bottom: 10px;
 }
 
+body.dark-mode .card .content .description {
+    color: #ccc;
+}
+
 .specs {
     background: #f5f5f5;
     padding: 10px 15px;
     border-radius: 8px;
     margin: 10px 0;
+}
+
+body.dark-mode .specs {
+    background: #252540;
 }
 
 .specs h4 {
@@ -356,6 +464,11 @@ header nav a:last-child:hover {
     font-size: 13px;
     padding: 3px 0;
     border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+body.dark-mode .specs ul li {
+    color: #ccc;
+    border-bottom-color: rgba(255,255,255,0.05);
 }
 
 .specs ul li:last-child {
@@ -413,7 +526,7 @@ header nav a:last-child:hover {
     text-decoration: underline;
 }
 
-/* ===== نظام التقييم (5 نجوم) ===== */
+/* ===== نظام التقييم ===== */
 .rating-section {
     display: flex;
     align-items: center;
@@ -423,6 +536,10 @@ header nav a:last-child:hover {
     background: #f8f8f8;
     border-radius: 8px;
     flex-wrap: wrap;
+}
+
+body.dark-mode .rating-section {
+    background: #252540;
 }
 
 .stars {
@@ -467,6 +584,10 @@ header nav a:last-child:hover {
     color: #666;
     font-size: 13px;
     font-weight: bold;
+}
+
+body.dark-mode .rating-text {
+    color: #aaa;
 }
 
 /* ===== زر واتساب ===== */
@@ -541,7 +662,7 @@ header nav a:last-child:hover {
 
 /* ===== قسم التواصل ===== */
 .contact-section {
-    background: #f0f0f0;
+    background: var(--section-bg);
     text-align: center;
     border-color: #ff4757;
 }
@@ -555,19 +676,19 @@ header nav a:last-child:hover {
 }
 
 .contact-card {
-    background: #ffffff;
+    background: var(--card-bg);
     padding: 18px 30px;
     border-radius: 12px;
     text-decoration: none;
-    color: #1a1a2e;
-    transition: 0.3s;
-    border: 1px solid #e0e0e0;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     gap: 15px;
     min-width: 200px;
     text-align: right;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .contact-card:hover {
@@ -599,18 +720,18 @@ header nav a:last-child:hover {
 }
 
 .social-card {
-    background: #ffffff;
+    background: var(--card-bg);
     padding: 15px 35px;
     border-radius: 50px;
     text-decoration: none;
-    color: #1a1a2e;
-    transition: 0.3s;
-    border: 1px solid #e0e0e0;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     gap: 12px;
     font-size: 18px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .social-card:hover {
@@ -639,92 +760,6 @@ header nav a:last-child:hover {
     margin-top: 20px;
 }
 
-/* ===== الفوتر ===== */
-footer {
-    text-align: center;
-    padding: 30px 20px;
-    border-top: 1px solid #e0e0e0;
-    margin-top: 30px;
-}
-
-footer p {
-    color: #888;
-    font-size: 15px;
-}
-
-/* ===== استجابة للشاشات الصغيرة ===== */
-@media (max-width: 768px) {
-    .header-container {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .logo-text {
-        font-size: 20px;
-        letter-spacing: 2px;
-    }
-    
-    .logo-img {
-        height: 40px;
-    }
-    
-    .hero-logo-large {
-        max-width: 95%;
-        max-height: 350px;
-    }
-    
-    .hero-subtitle {
-        font-size: 16px;
-        letter-spacing: 4px;
-    }
-    
-    .hero-btn {
-        padding: 12px 25px;
-        font-size: 15px;
-    }
-    
-    .section {
-        margin: 20px 10px;
-        padding: 20px 15px;
-    }
-    
-    .section h2 {
-        font-size: 22px;
-    }
-    
-    .contact-info-grid {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .contact-card {
-        width: 100%;
-        max-width: 300px;
-        justify-content: center;
-    }
-    
-    .social-grid {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .social-card {
-        width: 100%;
-        max-width: 250px;
-        justify-content: center;
-    }
-
-    .card-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .star {
-        font-size: 18px;
-    }
-    
-    .rating-section {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
+body.dark-mode .contact-note {
+    color: #aaa;
 }
