@@ -763,3 +763,112 @@ body.dark-mode .rating-text {
 body.dark-mode .contact-note {
     color: #aaa;
 }
+
+/* ===== الفوتر ===== */
+footer {
+    text-align: center;
+    padding: 30px 20px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 30px;
+    background: var(--footer-bg);
+    transition: all 0.3s ease;
+}
+
+footer p {
+    color: #888;
+    font-size: 15px;
+}
+
+body.dark-mode footer p {
+    color: #888;
+}
+
+/* ===== استجابة للشاشات الصغيرة ===== */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .header-controls {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    header nav {
+        order: 4;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .logo-text {
+        font-size: 20px;
+        letter-spacing: 2px;
+    }
+
+    .logo-img {
+        height: 40px;
+    }
+
+    .hero-logo-large {
+        max-width: 95%;
+        max-height: 350px;
+    }
+
+    .hero-subtitle {
+        font-size: 16px;
+        letter-spacing: 4px;
+    }
+
+    .hero-btn {
+        padding: 12px 25px;
+        font-size: 15px;
+    }
+
+    .section {
+        margin: 20px 10px;
+        padding: 20px 15px;
+    }
+
+    .section h2 {
+        font-size: 22px;
+    }
+
+    .contact-info-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .contact-card {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+
+    .social-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .social-card {
+        width: 100%;
+        max-width: 250px;
+        justify-content: center;
+    }
+
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .star {
+        font-size: 18px;
+    }
+
+    .rating-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+}
