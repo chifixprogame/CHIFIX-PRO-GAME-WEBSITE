@@ -29,7 +29,6 @@ function saveRating(itemId, rating) {
 
     saveData(data);
     
-    // تحديث العرض حسب النوع
     if (item.type === 'course') displayItems('course', 'coursesContainer');
     else if (item.type === 'console') displayItems('console', 'consolesContainer');
     else if (item.type === 'part') displayItems('part', 'partsContainer');
@@ -60,6 +59,165 @@ function rateProduct(itemId, rating) {
 }
 
 // ============================================
+// 🌙 الوضع الليلي
+// ============================================
+
+function toggleDarkMode() {
+    const body = document.body;
+    body.classList.toggle('dark-mode');
+
+    if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('darkMode', 'enabled');
+        document.getElementById('darkModeToggle').textContent = '☀️';
+    } else {
+        localStorage.setItem('darkMode', 'disabled');
+        document.getElementById('darkModeToggle').textContent = '🌙';
+    }
+}
+
+function loadDarkMode() {
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        document.getElementById('darkModeToggle').textContent = '☀️';
+    }
+}
+
+// ============================================
+// 🌍 تعدد اللغات (عربي + إنجليزي)
+// ============================================
+
+const translations = {
+    ar: {
+        nav_services: '🛠️ الخدمات',
+        nav_courses: '🎓 الدورات',
+        nav_consoles: '🎮 Consoles',
+        nav_parts: '🔧 قطع الغيار',
+        nav_contact: '📱 تواصل معنا',
+        nav_admin: '⚙️ لوحة التحكم',
+        hero_subtitle: 'CONSOLES • GAME • GAME • REPAIR',
+        hero_services: '🛠️ خدماتنا',
+        hero_consoles: '🎮 كونصول للبيع',
+        services_title: '🎮 الخدمات',
+        service_ps: 'PlayStation',
+        service_ps_desc: 'PS5 / PS4 / PS3',
+        service_xbox: 'Xbox',
+        service_xbox_desc: 'Xbox Series / One / 360',
+        service_nintendo: 'Nintendo',
+        service_nintendo_desc: 'Switch / Wii / DS',
+        service_controllers: 'Manettes',
+        service_controllers_desc: 'تصليح جميع أنواع التحكم',
+        service_electronic: 'صيانة إلكترونية',
+        service_electronic_desc: 'مكونات داخلية / لحام / فحص',
+        courses_title: '🎓 الدورات',
+        consoles_title: '🎮 Consoles متوفرة',
+        parts_title: '🔧 قطع الغيار',
+        contact_title: '📱 تواصل معنا',
+        contact_location: 'الموقع',
+        contact_location_detail: 'عين البيضاء، أم البواقي 🇩🇿',
+        contact_location_near: '📍 بجنب بنك CNEP',
+        contact_location_open: '📱 افتح في خرائط Google',
+        contact_whatsapp: 'واتساب',
+        contact_call: 'اتصل بنا',
+        social_facebook: 'فيسبوك',
+        social_tiktok: 'تيك توك',
+        contact_note: '📍 عين البيضاء، أم البواقي - بجنب بنك CNEP | نقبل جميع طرق الدفع',
+        footer_copyright: '© 2026 CHIFIX PRO GAME - جميع الحقوق محفوظة',
+        footer_tagline: 'صيانة • بيع • دورات • قطع غيار',
+        footer_location: '📍 عين البيضاء، أم البواقي - بجنب بنك CNEP | 📞 0671 67 65 44'
+    },
+    en: {
+        nav_services: '🛠️ Services',
+        nav_courses: '🎓 Courses',
+        nav_consoles: '🎮 Consoles',
+        nav_parts: '🔧 Spare Parts',
+        nav_contact: '📱 Contact Us',
+        nav_admin: '⚙️ Dashboard',
+        hero_subtitle: 'CONSOLES • GAME • GAME • REPAIR',
+        hero_services: '🛠️ Our Services',
+        hero_consoles: '🎮 Consoles for Sale',
+        services_title: '🎮 Services',
+        service_ps: 'PlayStation',
+        service_ps_desc: 'PS5 / PS4 / PS3',
+        service_xbox: 'Xbox',
+        service_xbox_desc: 'Xbox Series / One / 360',
+        service_nintendo: 'Nintendo',
+        service_nintendo_desc: 'Switch / Wii / DS',
+        service_controllers: 'Controllers',
+        service_controllers_desc: 'Repair all types of controllers',
+        service_electronic: 'Electronic Repair',
+        service_electronic_desc: 'Internal components / Soldering / Testing',
+        courses_title: '🎓 Courses',
+        consoles_title: '🎮 Available Consoles',
+        parts_title: '🔧 Spare Parts',
+        contact_title: '📱 Contact Us',
+        contact_location: 'Location',
+        contact_location_detail: 'Aïn Beïda, Oum El Bouaghi 🇩🇿',
+        contact_location_near: '📍 Next to CNEP Bank',
+        contact_location_open: '📱 Open in Google Maps',
+        contact_whatsapp: 'WhatsApp',
+        contact_call: 'Call Us',
+        social_facebook: 'Facebook',
+        social_tiktok: 'TikTok',
+        contact_note: '📍 Aïn Beïda, Oum El Bouaghi - Next to CNEP Bank | All payment methods accepted',
+        footer_copyright: '© 2026 CHIFIX PRO GAME - All Rights Reserved',
+        footer_tagline: 'Repair • Sales • Courses • Spare Parts',
+        footer_location: '📍 Aïn Beïda, Oum El Bouaghi - Next to CNEP Bank | 📞 0671 67 65 44'
+    }
+};
+
+let currentLang = localStorage.getItem('language') || 'ar';
+
+function switchLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('language', lang);
+    applyLanguage();
+    updateLanguageButtons();
+}
+
+function applyLanguage() {
+    const t = translations[currentLang];
+    if (!t) return;
+
+    document.querySelectorAll('[data-key]').forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (t[key]) {
+            el.textContent = t[key];
+        }
+    });
+
+    // تحديث اتجاه النص
+    if (currentLang === 'ar') {
+        document.documentElement.dir = 'rtl';
+        document.documentElement.lang = 'ar';
+    } else {
+        document.documentElement.dir = 'ltr';
+        document.documentElement.lang = 'en';
+    }
+
+    // إعادة عرض المنتجات مع الترجمة
+    displayItems('course', 'coursesContainer');
+    displayItems('console', 'consolesContainer');
+    displayItems('part', 'partsContainer');
+}
+
+function updateLanguageButtons() {
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.lang === currentLang) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+function loadLanguage() {
+    const savedLang = localStorage.getItem('language');
+    if (savedLang) {
+        currentLang = savedLang;
+    }
+    switchLanguage(currentLang);
+}
+
+// ============================================
 // ➕ إضافة عنصر جديد
 // ============================================
 
@@ -81,11 +239,14 @@ function addItem() {
         id: Date.now(),
         type: type,
         title: title,
+        title_en: title,
         description: description,
+        description_en: description,
         price: price,
         image: image,
         images: images ? images.split(',').map(img => img.trim()) : [],
         specs: specs ? specs.split(',').map(spec => spec.trim()) : [],
+        specs_en: specs ? specs.split(',').map(spec => spec.trim()) : [],
         views: 0,
         ratings: [],
         averageRating: 0,
@@ -110,7 +271,6 @@ function addItem() {
     data.push(newItem);
     saveData(data);
 
-    // تنظيف النموذج
     document.getElementById('itemTitle').value = '';
     document.getElementById('itemDesc').value = '';
     document.getElementById('itemPrice').value = '';
@@ -141,8 +301,9 @@ function displayItems(type, containerId) {
         return;
     }
 
+    const isArabic = currentLang === 'ar';
+
     container.innerHTML = filtered.map(item => {
-        // زيادة عدد المشاهدات
         let views = item.views || 0;
         views++;
         item.views = views;
@@ -150,39 +311,39 @@ function displayItems(type, containerId) {
         const updatedData = allData.map(i => i.id === item.id ? item : i);
         saveData(updatedData);
 
-        // بناء رسالة واتساب
+        const title = isArabic ? item.title : (item.title_en || item.title);
+        const description = isArabic ? item.description : (item.description_en || item.description);
+        const specs = isArabic ? (item.specs || []) : (item.specs_en || item.specs || []);
+        
         const whatsappMessage = encodeURIComponent(
             `🛒 طلب منتج من CHIFIX PRO GAME\n\n` +
-            `📦 المنتج: ${item.title}\n` +
-            `📝 الوصف: ${item.description}\n` +
+            `📦 المنتج: ${title}\n` +
+            `📝 الوصف: ${description}\n` +
             `💰 السعر: ${item.price} دولار\n` +
             `⭐ التقييم: ${item.averageRating ? item.averageRating.toFixed(1) : 'غير مقيم'} (${item.totalRatings || 0} تقييم)\n` +
             `🔗 الرابط: ${window.location.href}`
         );
         const whatsappUrl = `https://wa.me/213671676544?text=${whatsappMessage}`;
 
-        // بناء الصور المصغرة
         let thumbnails = '';
         if (item.images && item.images.length > 0) {
             thumbnails = item.images.map(img => `
-                <img src="${img}" alt="${item.title}" class="thumb" onclick="openLightbox('${img}')" />
+                <img src="${img}" alt="${title}" class="thumb" onclick="openLightbox('${img}')" />
             `).join('');
         }
 
-        // بناء المواصفات
         let specsHtml = '';
-        if (item.specs && item.specs.length > 0) {
+        if (specs && specs.length > 0) {
             specsHtml = `
                 <div class="specs">
-                    <h4>📋 المواصفات:</h4>
+                    <h4>📋 ${isArabic ? 'المواصفات:' : 'Specifications:'}</h4>
                     <ul>
-                        ${item.specs.map(spec => `<li>${spec}</li>`).join('')}
+                        ${specs.map(spec => `<li>${spec}</li>`).join('')}
                     </ul>
                 </div>
             `;
         }
 
-        // بناء التقييم
         const avgRating = item.averageRating || 0;
         const totalRatings = item.totalRatings || 0;
         const starsHtml = renderStars(avgRating, item.id);
@@ -190,7 +351,7 @@ function displayItems(type, containerId) {
         return `
         <div class="card">
             <div class="card-image">
-                <img src="${item.image}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/300x200/252540/666?text=No+Image'" />
+                <img src="${item.image}" alt="${title}" onerror="this.src='https://via.placeholder.com/300x200/252540/666?text=No+Image'" />
                 <span class="view-count">👁️ ${item.views}</span>
                 ${item.images && item.images.length > 0 ? `
                 <div class="thumbnails">
@@ -199,23 +360,22 @@ function displayItems(type, containerId) {
                 ` : ''}
             </div>
             <div class="content">
-                <h3>${item.title}</h3>
-                <p class="description">${item.description}</p>
+                <h3>${title}</h3>
+                <p class="description">${description}</p>
                 ${specsHtml}
-                <span class="price">💰 ${item.price} دولار</span>
-                ${item.video ? `<a href="${item.video}" target="_blank" class="video-link">▶️ مشاهدة الفيديو</a>` : ''}
+                <span class="price">💰 ${item.price} ${isArabic ? 'دولار' : 'USD'}</span>
+                ${item.video ? `<a href="${item.video}" target="_blank" class="video-link">▶️ ${isArabic ? 'مشاهدة الفيديو' : 'Watch Video'}</a>` : ''}
                 ${item.status ? `<span class="status ${item.status === 'متاح' ? 'available' : 'sold'}">${item.status}</span>` : ''}
                 
-                <!-- ===== التقييم ===== -->
                 <div class="rating-section">
                     <div class="stars">
                         ${starsHtml}
                     </div>
-                    <span class="rating-text">${avgRating ? avgRating.toFixed(1) : 'غير مقيم'} (${totalRatings} تقييم)</span>
+                    <span class="rating-text">${avgRating ? avgRating.toFixed(1) : (isArabic ? 'غير مقيم' : 'Not Rated')} (${totalRatings} ${isArabic ? 'تقييم' : 'ratings'})</span>
                 </div>
                 
                 <a href="${whatsappUrl}" target="_blank" class="whatsapp-btn">
-                    💬 طلب عبر واتساب
+                    💬 ${isArabic ? 'طلب عبر واتساب' : 'Order via WhatsApp'}
                 </a>
             </div>
         </div>
@@ -223,7 +383,7 @@ function displayItems(type, containerId) {
 }
 
 // ============================================
-// 🖼️ عرض الصور في Lightbox
+// 🖼️ Lightbox
 // ============================================
 
 function openLightbox(imageSrc) {
@@ -249,7 +409,7 @@ function closeLightbox() {
 }
 
 // ============================================
-// 📊 تحديث لوحة الإحصائيات
+// 📊 لوحة التحكم
 // ============================================
 
 function updateDashboard() {
@@ -275,10 +435,6 @@ function updateDashboard() {
     document.getElementById('totalRevenue').textContent = revenue.toFixed(2);
 }
 
-// ============================================
-// 📋 إدارة الطلبات
-// ============================================
-
 function getOrders() {
     const stored = localStorage.getItem('chifixOrders');
     return stored ? JSON.parse(stored) : [];
@@ -293,7 +449,7 @@ function renderOrders() {
     const orders = getOrders();
 
     if (orders.length === 0) {
-        container.innerHTML = `<p style="color: #666; text-align: center; padding: 40px;">📭 لا توجد طلبات حتى الآن</p>`;
+        container.innerHTML = `<p class="no-data">📭 ${currentLang === 'ar' ? 'لا توجد طلبات حتى الآن' : 'No orders yet'}</p>`;
         return;
     }
 
@@ -301,7 +457,7 @@ function renderOrders() {
         <div class="order-item">
             <div class="order-info">
                 <strong>${order.product}</strong>
-                <small>💰 ${order.price} دولار | 📅 ${order.date}</small>
+                <small>💰 ${order.price} USD | 📅 ${order.date}</small>
             </div>
             <span class="order-status ${order.status}">
                 ${order.status === 'pending' ? '⏳ قيد الانتظار' : 
@@ -332,7 +488,7 @@ function updateOrderStatus(id, status) {
 }
 
 function deleteOrder(id) {
-    if (!confirm('هل أنت متأكد من حذف هذا الطلب؟')) return;
+    if (!confirm(currentLang === 'ar' ? 'هل أنت متأكد من حذف هذا الطلب؟' : 'Are you sure you want to delete this order?')) return;
     let orders = getOrders();
     orders = orders.filter(o => o.id !== id);
     saveOrders(orders);
@@ -349,28 +505,31 @@ function renderTopProducts() {
     const data = getData();
 
     if (data.length === 0) {
-        container.innerHTML = `<p style="color: #666; text-align: center; padding: 20px;">📭 لا توجد منتجات</p>`;
+        container.innerHTML = `<p style="color: #666;">📭 ${currentLang === 'ar' ? 'لا توجد منتجات' : 'No products'}</p>`;
         return;
     }
 
     const sorted = [...data].sort((a, b) => (b.views || 0) - (a.views || 0));
 
-    container.innerHTML = sorted.slice(0, 5).map((item, index) => `
-        <div class="product-item">
-            <span class="rank">#${index + 1}</span>
-            <span class="product-name">${item.title}</span>
-            <span class="product-views">👁️ ${item.views || 0} مشاهدة</span>
-        </div>
-    `).join('');
+    container.innerHTML = sorted.slice(0, 5).map((item, index) => {
+        const title = currentLang === 'ar' ? item.title : (item.title_en || item.title);
+        return `
+            <div class="product-item">
+                <span class="rank">#${index + 1}</span>
+                <span class="product-name">${title}</span>
+                <span class="product-views">👁️ ${item.views || 0} ${currentLang === 'ar' ? 'مشاهدة' : 'views'}</span>
+            </div>
+        `;
+    }).join('');
 }
 
 // ============================================
-// 📊 رسم بياني للزوار
+// 📊 رسم بياني
 // ============================================
 
 function renderChart() {
     const container = document.getElementById('visitorChart');
-    const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+    const days = currentLang === 'ar' ? ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'] : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const values = [];
 
     for (let i = 0; i < 7; i++) {
@@ -385,7 +544,7 @@ function renderChart() {
     const max = Math.max(...values);
 
     container.innerHTML = days.map((day, index) => {
-        const height = max > 0 ? (values[index] / max) * 170 : 10;
+        const height = max > 0 ? (values[index] / max) * 140 : 10;
         return `
             <div class="chart-bar">
                 <div class="bar" style="height: ${height}px;"></div>
@@ -397,31 +556,11 @@ function renderChart() {
 }
 
 // ============================================
-// 🔄 التبديل بين التبويبات
-// ============================================
-
-function switchTab(tab) {
-    document.querySelectorAll('.tab-content').forEach(el => {
-        el.classList.remove('active');
-    });
-    document.getElementById('tab-' + tab).classList.add('active');
-
-    document.querySelectorAll('.tab-btn').forEach(el => {
-        el.classList.remove('active');
-    });
-    document.querySelectorAll('.tab-btn').forEach(el => {
-        if (el.textContent.includes('الإحصائيات') && tab === 'dashboard') el.classList.add('active');
-        if (el.textContent.includes('المنتجات') && tab === 'products') el.classList.add('active');
-        if (el.textContent.includes('الطلبات') && tab === 'orders') el.classList.add('active');
-    });
-}
-
-// ============================================
 // 🗑️ حذف عنصر
 // ============================================
 
 function deleteItem(id) {
-    if (!confirm('هل أنت متأكد من حذف هذا العنصر؟')) return;
+    if (!confirm(currentLang === 'ar' ? 'هل أنت متأكد من حذف هذا العنصر؟' : 'Are you sure you want to delete this item?')) return;
     let data = getData();
     data = data.filter(item => item.id !== id);
     saveData(data);
@@ -469,7 +608,7 @@ function renderAdminTable() {
     if (!tbody) return;
 
     if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#666;">📭 لا توجد عناصر مضافة بعد</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#666;">📭 ${currentLang === 'ar' ? 'لا توجد عناصر مضافة بعد' : 'No items added yet'}</td></tr>`;
         return;
     }
 
@@ -481,7 +620,7 @@ function renderAdminTable() {
             <td>${index + 1}</td>
             <td>${item.type === 'course' ? '🎓 دورة' : item.type === 'console' ? '🎮 كونسول' : '🔧 قطعة غيار'}</td>
             <td>${item.title}</td>
-            <td>${item.price} دولار</td>
+            <td>${item.price} USD</td>
             <td>⭐ ${avgRating ? avgRating.toFixed(1) : 'غير مقيم'} (${totalRatings})</td>
             <td>👁️ ${item.views || 0}</td>
             <td>${item.images ? item.images.length : 0} صورة</td>
@@ -512,4 +651,30 @@ function toggleFields() {
         videoField.style.display = 'none';
         statusField.style.display = 'none';
     }
+}
+
+// ============================================
+// 🔄 التبديل بين التبويبات
+// ============================================
+
+function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(el => {
+        el.classList.remove('active');
+    });
+    document.getElementById('tab-' + tab).classList.add('active');
+
+    document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-btn').forEach(el => {
+        if (el.textContent.includes('المنتجات') || el.textContent.includes('Products')) {
+            if (tab === 'products') el.classList.add('active');
+        }
+        if (el.textContent.includes('الطلبات') || el.textContent.includes('Orders')) {
+            if (tab === 'orders') el.classList.add('active');
+        }
+        if (el.textContent.includes('الإحصائيات') || el.textContent.includes('Stats')) {
+            if (tab === 'stats') el.classList.add('active');
+        }
+    });
 }
